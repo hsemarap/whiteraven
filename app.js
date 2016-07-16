@@ -6,6 +6,9 @@ var Strategy = require('passport-twitter').Strategy;
 var express_session = require('express-session');
 
 //Base setup
+var mongoose   = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/test'); // connect to our database
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(require('body-parser').urlencoded({ extended: true }));
@@ -58,19 +61,34 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 
-
-// Define routes.
+//Router
 var router = express.Router();
 router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });
 });
+
+router.use(function(req, res, next) {
+    console.log("Request incoming");
+    next();
+})
+
+//Routes
+var indexRoute = require('./app/routes/index');
+var usersRoute = require('./app/routes/users');
+var storiesRoute = require('./app/routes/stories');
+var tagsRoute = require('./app/routes/tags');
+app.use('/api', indexRoute);
+app.use('/api/users', usersRoute);
+app.use('/api/stories', storiesRoute);
+app.use('/api/stories', storiesRoute);
+app.use('/api/tags', tagsRoute);
 
 
 // Login routers
 app.get('/login/twitter',
   passport.authenticate('twitter'));
 
-app.get('/login/twitter/return', 
+app.get('/login/twitter/return',
   passport.authenticate('twitter', { failureRedirect: '/' }),
   function(req, res) {
     res.redirect('/views/feed.html');
