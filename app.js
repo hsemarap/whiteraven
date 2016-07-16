@@ -18,6 +18,12 @@ app.use(express_session({ secret: 'keyboard cat', resave: true, saveUninitialize
 app.use(passport.initialize());
 app.use(passport.session());
 
+var indexRoute = require('./app/routes/index');
+var usersRoute = require('./app/routes/users');
+var storiesRoute = require('./app/routes/stories');
+var tagsRoute = require('./app/routes/tags');
+
+
 //Port
 var port = process.env.PORT || 3000;
 
@@ -41,6 +47,18 @@ passport.use(new Strategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
+
+    var newuser = {};
+    newuser["_id"] = profile.id;
+    newuser["name"] = profile.displayName;
+    newuser["handle"] = profile.username;
+
+    usersRoute.findOrCreate(newuser, function(err, click, created) {
+      if(created) {
+        console.log("New user: " + profile.displayName);
+      }
+    });
+
     return cb(null, profile);
   }));
 
@@ -74,15 +92,11 @@ router.use(function(req, res, next) {
 })
 
 //Routes
-var indexRoute = require('./app/routes/index');
-var usersRoute = require('./app/routes/users');
-var storiesRoute = require('./app/routes/stories');
-var tagsRoute = require('./app/routes/tags');
-app.use('/api', indexRoute);
-app.use('/api/users', usersRoute);
-app.use('/api/stories', storiesRoute);
-app.use('/api/stories', storiesRoute);
-app.use('/api/tags', tagsRoute);
+app.use('/api', indexRoute.router);
+app.use('/api/users', usersRoute.router);
+app.use('/api/stories', storiesRoute.router);
+app.use('/api/stories', storiesRoute.router);
+app.use('/api/tags', tagsRoute.router);
 
 
 // Login routers

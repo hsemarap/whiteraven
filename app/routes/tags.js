@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = exports.router = express.Router();
 var Tag = require.main.require('./app/models/tag');
 
 router.route('/')
@@ -75,4 +75,3 @@ router.route('/:tag_id')
         })
     })
 
-module.exports = router;
