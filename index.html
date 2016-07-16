@@ -1,17 +1,60 @@
 <html>
     <head>
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>White Raven</title>
-        <script type="text/javascript" src="public/scripts/jquery.min.js"></script>
-        <script type="text/javascript" src="public/scripts/knockout-min.js"></script>
-        <script type="text/javascript" src="scripts/home.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
     </head>
+
     <body>
+        <div class="container">
+            <br/><br/><br/><br/><br/>
+            <div class="row">
+                <div class="jumbotron col-md-12">
+                    <h1>White Raven</h1>
+                    <p>A social news aggregator</p>
+                    <p><a class="btn btn-primary btn-lg col-md-offset-5" href="/login/twitter" role="button">Login via Twitter</a></p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 
         <h1>White Raven</h1>
         <ul data-bind="foreach: todoItems">
             <li>
                 <span data-bind="text: name"></span>
                 <input type="checkbox" data-bind="checked: complete" />
             </li>
-        </ul>
+        </ul> 
+        -->
+
+        <script type="text/javascript" src="public/scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="public/scripts/knockout-min.js"></script>
+        <script type="text/javascript" src="scripts/home.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+        <!-- Leave out Storage -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-storage.js"></script> -->
+        <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyA8X-HLvDJYxyjmLVnOCI_sbB_USNkrD-w",
+            authDomain: "whiteraven-ff0c8.firebaseapp.com",
+            databaseURL: "https://whiteraven-ff0c8.firebaseio.com",
+            storageBucket: "whiteraven-ff0c8.appspot.com",
+          };
+          firebase.initializeApp(config);
+        </script>
+        <script type="text/javascript">
+            function login() {
+                window.location = 
+                "/login/twitter" ;
+            }
+        </script>
     </body>
 </html>
