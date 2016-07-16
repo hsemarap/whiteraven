@@ -28,6 +28,8 @@ var port = process.env.PORT || 3000;
 // user's behalf, along with the user's profile.  The function must invoke `cb`
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
+
+
 passport.use(new Strategy({
     consumerKey: "RNObfLht2saEKcxqyDVHZh37B",
     consumerSecret: "4IQt0qAneBsG494B5Xjdel9aIzhVHiU2rtUqHsA02t2lB8UUgP",
@@ -39,7 +41,6 @@ passport.use(new Strategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
-    console.log(profile);
     return cb(null, profile);
   }));
 

@@ -5,17 +5,28 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>White Raven</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
     </head>
 
     <body>
 		<div class="container">
             <br/><br/><br/><br/><br/>
             <div class="row">
-                News Feed
+                <div class="jumbotron col-md-12">
+                	<h1>White Raven</h1>
+                	<div class="row">
+	                	<p class="col-md-6">Username: <span data-bind="text: name"></span></p>
+	                	<p class="col-md-6">Handle: <span data-bind="text: handle"></span></p>
+                	</div>
+                </div>
+            </div>
+            <div class="row">
             </div>
         </div>
 
+		<script type="text/javascript" src="../public/scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="../public/scripts/knockout-min.js"></script>
+		<script type="text/javascript" src="../scripts/user.js"></script>
 		<script type="text/javascript">
 		</script>
 	</body>
