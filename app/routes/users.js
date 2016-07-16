@@ -1,22 +1,28 @@
 var express = require('express');
-var router = express.Router();
+var router = exports.router = express.Router();
 var User = require.main.require('./app/models/user');
+
+var findOrCreate = exports.findOrCreate = function (obj, callback) {
+  User.findOrCreate(obj, callback);
+};
+
+var create = exports.create = function(obj, callback) {
+  var user = new User();
+  user.name = obj.name;
+  user.handle = obj.handle;
+  user.save(callback);
+};
 
 router.route('/')
     .post(function(req, res) {
-        var user = new User();
-        user.name = req.body.name;
-        user.handle = req.body.handle;
-        user.tokenId = req.body.token;
-
-        user.save(function(err) {
+        createUser(req.body, function(err) {
             if (err) {
               res.send(err);
               return;
             }
 
             res.json({message: 'User created!'});
-        })
+        });
     })
 
     .get(function(req, res) {
@@ -47,7 +53,7 @@ router.route('/:user_id')
               res.send(err);
               return;
             }
-            var props = ["name", "handle", "token"];
+            var props = ["name", "handle", "_id"];
             var request = req.body;
             props.forEach(function(attrib){
               if (attrib in request) {
@@ -76,5 +82,3 @@ router.route('/:user_id')
             res.json({message: 'Delete Success'});
         })
     })
-
-module.exports = router;

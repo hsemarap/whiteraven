@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = exports.router = express.Router();
 var Story = require.main.require('./app/models/story');
 
 router.route('/')
@@ -82,5 +82,3 @@ router.route('/:story_id')
             res.json({message: 'Delete Success'});
         })
     })
-
-module.exports = router;
