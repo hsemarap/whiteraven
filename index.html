@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>White Raven</title>
+        <script type="text/javascript" src="public/scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="public/scripts/knockout-min.js"></script>
+        <script type="text/javascript" src="scripts/home.js"></script>
+    </head>
+    <body>
+        <h1>White Raven</h1>
+        <ul data-bind="foreach: todoItems">
+            <li>
+                <span data-bind="text: name"></span>
+                <input type="checkbox" data-bind="checked: complete" />
+            </li>
+        </ul>
+    </body>
+</html>
