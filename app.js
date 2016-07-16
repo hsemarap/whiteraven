@@ -1,6 +1,8 @@
 var express    = require('express');
 var app        = express();
 var bodyParser = require('body-parser');
+var cookie = require('cookie');
+var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
 var express_session = require('express-session');
@@ -12,8 +14,12 @@ mongoose.connect('mongodb://localhost:27017/test'); // connect to our database
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(express_session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-
+app.use(cookieParser());
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
 // Initialize Passport and restore authentication state, if any, from the session.
 app.use(passport.initialize());
 app.use(passport.session());
@@ -23,9 +29,23 @@ var usersRoute = require('./app/routes/users');
 var storiesRoute = require('./app/routes/stories');
 var tagsRoute = require('./app/routes/tags');
 
+// Pages
+var profileRoute = require('./app/routes/profile');
 
 //Port
 var port = process.env.PORT || 3000;
+var sess = {}, userToken, userTokenSecret;
+
+//Router
+var router = express.Router();
+router.use(function(req, res, next) {
+    console.log("Request incoming");
+    next();
+})
+
+router.get('/', function(req, res) {
+    res.json({ message: 'hooray! welcome to our api!' });
+});
 
 // Configure the Twitter strategy for use by Passport.
 //
@@ -50,11 +70,14 @@ passport.use(new Strategy({
     newuser["_id"] = profile.id;
     newuser["name"] = profile.displayName;
     newuser["handle"] = profile.username;
+    userToken = token;
+    userTokenSecret = tokenSecret;
 
     usersRoute.findOrCreate(newuser, function(err, click, created) {
       if(created) {
         console.log("New user: " + profile.displayName);
       }
+      sess.user = newuser;
     });
 
     return cb(null, profile);
@@ -78,16 +101,6 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 
-//Router
-var router = express.Router();
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
-});
-
-router.use(function(req, res, next) {
-    console.log("Request incoming");
-    next();
-})
 
 //Routes
 app.use('/api', indexRoute.router);
@@ -95,6 +108,8 @@ app.use('/api/users', usersRoute.router);
 app.use('/api/stories', storiesRoute.router);
 app.use('/api/stories', storiesRoute.router);
 app.use('/api/tags', tagsRoute.router);
+app.use('/api/profile', profileRoute.router);
+// app.use('/tweet', tweetRoute.router);
 
 
 // Login routers
@@ -104,6 +119,13 @@ app.get('/login/twitter',
 app.get('/login/twitter/return',
   passport.authenticate('twitter', { failureRedirect: '/' }),
   function(req, res) {
+    req.session.user = req.user;
+    req.session.userToken = userToken;
+    req.session.userTokenSecret = userTokenSecret;
+    var userdata = {}
+    res.cookie("user_id", req.user.id);
+    res.cookie("user_name", req.user.displayName);
+    res.cookie("user_handle", req.user.username);
     res.redirect('/views/feed.html');
   });
 
