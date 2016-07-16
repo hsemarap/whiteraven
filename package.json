@@ -30,6 +30,7 @@
     "mongodb": "^2.2.2",
     "mongoose": "^4.5.4",
     "mongoose-findorcreate": "^0.1.2",
+    "oauth": "^0.9.14",
     "passport": "^0.3.2",
     "passport-twitter": "^1.0.4"
   }

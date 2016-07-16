@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>White Raven</title>
-        <link href="../css/bootstrap.min.css" rel="stylesheet">
+       <link href="../css/bootstrap.min.css" rel="stylesheet">
     </head>
 
     <body>
@@ -21,13 +21,30 @@
                 </div>
             </div>
             <div class="row">
+            	<ul class="nav nav-pills nav-stacked col-md-2">
+				  <li role="presentation" class="active"><a href="feed.html">News Feed</a></li>
+				  <li role="presentation"><a href="profile.html">Profile</a></li>				  
+				</ul>
+				<ul class="well col-md-9 col-md-offset-1">
+					<div class="input-group">
+					  <span class="input-group-addon">Link</span>
+					  <input type="text" class="form-control" aria-label="URL">					  
+					</div>
+					<br/>
+					<div class="input-group">
+					  <span class="input-group-addon">Description</span>
+					  <input type="text" class="form-control" aria-label="Description">					  
+					</div>
+					<br/>
+					<a class="btn btn-success btn-lg col-md-offset-5" href="/login/twitter" role="button">Post</a>
+				</ul>
             </div>
         </div>
 
 		<script type="text/javascript" src="../public/scripts/jquery.min.js"></script>
         <script type="text/javascript" src="../public/scripts/knockout-min.js"></script>
 		<script type="text/javascript" src="../scripts/user.js"></script>
-		<script type="text/javascript">
+		<script type="text/javascript">			
 		</script>
 	</body>
 </html>
