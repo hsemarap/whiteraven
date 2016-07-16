@@ -3,34 +3,20 @@ var app        = express();
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
+var express_session = require('express-session');
 
 //Base setup
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(express_session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
-//Routes
-var router = express.Router();
+// Initialize Passport and restore authentication state, if any, from the session.
+app.use(passport.initialize());
+app.use(passport.session());
 
-// router.get('/', function(req, res) {
-//     res.json({ message: 'hooray! welcome to our api!' });
-// });
-// 
-// router.get("/todos", function(req, res){
-//     var response = [
-//         { name: "Item 1 from server", complete: false },
-//         { name: "Item 2 from server", complete: false },
-//         { name: "Completed Item from server", complete: true }
-//     ];
-//     res.status(200).json(response);
-//     res.end();
-// });
-
-// router.put("/todos/:todoId", function(req, res) {
-//     console.log(req.params.todoId + ": " + JSON.stringify(req.body, null, 4));
-//     res.send(200);
-//     res.end();
-// });
-
+//Port
+var port = process.env.PORT || 3000;
 
 // Configure the Twitter strategy for use by Passport.
 //
@@ -50,9 +36,9 @@ passport.use(new Strategy({
     // be associated with a user record in the application's database, which
     // allows for account linking and authentication with other identity
     // providers.
+    console.log(profile);
     return cb(null, profile);
   }));
-
 
 // Configure Passport authenticated session persistence.
 //
@@ -72,22 +58,22 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
-// Initialize Passport and restore authentication state, if any, from the
-// session.
-app.use(passport.initialize());
-app.use(passport.session());
+// Define routes.
+var router = express.Router();
+router.get('/', function(req, res) {
+    res.json({ message: 'hooray! welcome to our api!' });
+});
 
-// Define login routes.
+
+// Login routers
 app.get('/login/twitter',
   passport.authenticate('twitter'));
 
 app.get('/login/twitter/return', 
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  passport.authenticate('twitter', { failureRedirect: '/' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/views/feed.html');
   });
 
 
