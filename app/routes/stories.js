@@ -2,6 +2,11 @@ var express = require('express');
 var router = exports.router = express.Router();
 var Story = require.main.require('./app/models/story');
 
+var findOrCreate = exports.findOrCreate = function (obj, callback) {
+  Story.findOrCreate(obj, callback);
+};
+
+
 router.route('/')
     .post(function(req, res) {
         var story = new Story();
@@ -12,6 +17,7 @@ router.route('/')
         story.addedBy = req.body.addedBy;
         story.createdAt = req.body.createdAt;
         story.updatedAt = req.body.updatedAt;
+        story.tweet_id = req.body.tweet_id;
 
         story.save(function(err) {
             if (err) {

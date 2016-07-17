@@ -28,6 +28,7 @@ var indexRoute = require('./app/routes/index');
 var usersRoute = require('./app/routes/users');
 var storiesRoute = require('./app/routes/stories');
 var tagsRoute = require('./app/routes/tags');
+var tweetRoute = require('./app/routes/tweet');
 
 // Pages
 var profileRoute = require('./app/routes/profile');
@@ -108,10 +109,9 @@ passport.deserializeUser(function(obj, cb) {
 app.use('/api', indexRoute.router);
 app.use('/api/users', usersRoute.router);
 app.use('/api/stories', storiesRoute.router);
-app.use('/api/stories', storiesRoute.router);
 app.use('/api/tags', tagsRoute.router);
 app.use('/api/profile', profileRoute.router);
-// app.use('/tweet', tweetRoute.router);
+app.use('/api/tweet', tweetRoute.router);
 
 
 // Login routers
