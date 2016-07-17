@@ -32,7 +32,7 @@ router.route('/:tweet_id')
                   if (e) console.error(e);
                   try {
                     var dataJSON = JSON.parse(data);
-                    var newstory = new Story();
+                    var newstory = {};
                     newstory["url"]= dataJSON.url;
                     newstory["title"]= dataJSON.text;
                     newstory["description"]= dataJSON.html;
@@ -40,7 +40,7 @@ router.route('/:tweet_id')
                     newstory["addedBy"]= dataJSON.author_url;
                     newstory["createdAt"]= dataJSON.created_at;
                     newstory["tweet_id"]= tweet_id;
-                    newstory.save(function(err) {
+                    storiesRoute.create(newstory, function(err) {
                       if (err) {
                         console.log("Tweet story creation failed: " + tweet_id);
                         res.send(err);

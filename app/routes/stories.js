@@ -7,19 +7,24 @@ var findOrCreate = exports.findOrCreate = function (obj, callback) {
 };
 
 
+var create = exports.create = function(obj, callback) {
+    var story = new Story();
+    story.url = obj.url;
+    story.title = obj.title;
+    story.description = obj.description;
+    story.tags = obj.tags;
+    story.addedBy = obj.addedBy;
+    story.createdAt = obj.createdAt;
+    story.updatedAt = obj.updatedAt;
+    story.tweet_id = obj.tweet_id;
+    story.save(callback);
+};
+
+var hodAPIkey = "2ebf90bc-8278-4eae-b99e-08722003d840";
+
 router.route('/')
     .post(function(req, res) {
-        var story = new Story();
-        story.url = req.body.url;
-        story.title = req.body.title;
-        story.description = req.body.description;
-        story.tags = req.body.tags;
-        story.addedBy = req.body.addedBy;
-        story.createdAt = req.body.createdAt;
-        story.updatedAt = req.body.updatedAt;
-        story.tweet_id = req.body.tweet_id;
-
-        story.save(function(err) {
+        create(req.body, function(err) {
             if (err) {
                 res.send(err);
                 return;
