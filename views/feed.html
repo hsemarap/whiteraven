@@ -58,8 +58,9 @@
 							<li class="list-group-item" data-bind="visible: !isTweet()"><strong data-bind="text: title"></strong></li>						
 							<li class="list-group-item" data-bind="visible: !isTweet()"><strong data-bind="text: url"></strong></li>						
 							<li class="list-group-item" data-bind="visible: !isTweet()"><strong data-bind="text: description"></strong></li>
-							<li data-bind="visible: isTweet()"><span>This is a tweet</span></li>	
-							<br/>
+							<li class="list-group-item" data-bind="visible: isTweet()">Tweet</li>	
+							<li class="list-group-item" data-bind="visible: isTweet()"> <span data-bind="html: description"></strong></li>
+							<br/>						
 						</ul>	
 					</div>
 				</ul>

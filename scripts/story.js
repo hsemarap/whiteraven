@@ -22,22 +22,35 @@ function NewsFeedViewModel() {
 
 	self.addStory = function() {
 		var tempObj = {title: this.storyTitle(), url: this.storyUrl(), description: this.storyDescription()}
-		self.stories.push(new Story(tempObj));
+		console.log(self.stories());
+		temp = self.stories();
+		temp.push(new Story(tempObj))
+		self.stories(temp);
 		$.post("/api/stories",tempObj);
 	}
+
 	self.getStories = function() {
 		$.get("/api/stories", function(data) {
 			temp = [];
 			data.forEach(function(item) {
 				temp.push(new Story(item));				
 			});
-			temp = self.getTweets(temp);
 			self.stories(temp);
+			self.getTweets(temp, self.stories);
 		});
 	}
-	self.getTweets = function(storyList) {
-		$.get("/api/profile", function(data) {
-
+	self.getTweets = function(oldList, cb) {
+		$.get("/api/profile", function(data) {			
+			jsonData = JSON.parse(data);	
+			console.log(jsonData);
+			jsonData.forEach(function(item) {				
+				tweetEndpoint = "/api/tweet/" + item.id;
+				$.get(tweetEndpoint, function(tweetData) {
+					console.log(tweetData);
+					oldList.push(new Story(tweetData));
+					self.stories(oldList);
+				});
+			});
 		});
 	}
 	self.getStories();

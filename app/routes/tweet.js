@@ -26,13 +26,14 @@ router.route('/:tweet_id')
                 res.send(err);
                 return;
             }
-            if (story == null) {
+            var newstory = story;
+            
               oauth.get(timelineAPIURL, token1, token2,
                 function (e, data, result){
                   if (e) console.error(e);
                   try {
                     var dataJSON = JSON.parse(data);
-                    var newstory = {};
+                    newstory = new Story();
                     newstory["url"]= dataJSON.url;
                     newstory["title"]= dataJSON.text;
                     newstory["description"]= dataJSON.html;
@@ -40,24 +41,26 @@ router.route('/:tweet_id')
                     newstory["addedBy"]= dataJSON.author_url;
                     newstory["createdAt"]= dataJSON.created_at;
                     newstory["tweet_id"]= tweet_id;
-                    storiesRoute.create(newstory, function(err) {
-                      if (err) {
-                        console.log("Tweet story creation failed: " + tweet_id);
-                        res.send(err);
-                        return;
-                      }
-                      console.log("Tweet story created: " + tweet_id);
-                      res.send(dataJSON.html);
-                    });
+                    console.log(dataJSON);
+                    if(story==null) {
+                      newstory.save(function(err) {
+                        if (err) {
+                          console.log("Tweet story creation failed: " + tweet_id);
+                          res.send(err);
+                          return;
+                        }
+                        console.log("Tweet story created: " + tweet_id);
+                      });
+                    }
+                    res.send(newstory);
                   } catch(e) {
                     console.log("Error while parsing tweet endpoint response");
                   }
-                });
-            } else {
-              console.log("Got tweet " + tweet_id + " from DB");
-              res.send(story.description);
-            }
+                });                                 
         });
 
+    })
+    .delete(function(req, res) {
+        Story.remove({tweet_id: req.params.tweet_id});
     });
 
