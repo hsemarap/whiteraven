@@ -15,7 +15,7 @@ var create = exports.create = function(obj, callback) {
 
 router.route('/')
     .post(function(req, res) {
-        createUser(req.body, function(err) {
+        create(req.body, function(err) {
             if (err) {
               res.send(err);
               return;

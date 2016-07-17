@@ -9,7 +9,7 @@ function Story(data) {
 	this.tweet_id = ko.observable(data.tweet_id);
 
 	this.isTweet = function() {
-		return (this.description()?true:false);
+		return (this.tweet_id()?true:false);
 	}
 }
 
@@ -31,7 +31,13 @@ function NewsFeedViewModel() {
 			data.forEach(function(item) {
 				temp.push(new Story(item));				
 			});
+			temp = self.getTweets(temp);
 			self.stories(temp);
+		});
+	}
+	self.getTweets = function(storyList) {
+		$.get("/api/profile", function(data) {
+
 		});
 	}
 	self.getStories();
