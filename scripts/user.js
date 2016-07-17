@@ -1,17 +1,34 @@
 var userModel = {
 	name: ko.observable("admin"),
 	handle: ko.observable("admin"),
-	tokenId: ko.observable("")
+	_id: ko.observable(""),
 };
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
+
 function getUserInfo() {
-	var userURI = "/api/users/" + "4230838152"
-	$.getJSON(userURI, function(data) { 
-		// Now use this data to update your view models, 
-		// and Knockout will update your UI automatically 
-		userModel.name(data.name);
-		userModel.handle(data.handle);
-	})
+	var userCookie = document.cookie;
+	userModel.name(getCookie("user_name"));
+	userModel.handle(getCookie("user_handle"));
+	userModel._id(getCookie("user_id"));
+	// var userURI = "/api/users/" + "4230838152"
+	// $.getJSON(userURI, function(data) { 
+	// 	userModel.name(data.name);
+	// 	userModel.handle(data.handle);
+	// })
 }
 
 getUserInfo();
